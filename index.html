@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treasure Lock Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(to bottom, #ffe9a7, #ffcf71);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .game-container {
+      background: #fff8e1;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 320px;
+    }
+    .stats {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .chest {
+      width: 100px;
+      height: 100px;
+      background: url('https://i.imgur.com/hg4sXR6.png') center/cover no-repeat;
+      margin: 0 auto 20px;
+    }
+    .button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #f4a261;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+    }
+    .button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .reward {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h2>🔐 Treasure Lock</h2>
+    <div class="stats">
+      Keys: <span id="keyCount">3</span><br />
+      Coins: <span id="coinCount">0</span>
+    </div>
+    <div class="chest"></div>
+    <button class="button" id="openBtn">Use 1 Key</button>
+    <div class="reward" id="rewardMsg"></div>
+  </div>
+
+  <script>
+    let keys = 3;
+    let coins = 0;
+
+    const keyCount = document.getElementById('keyCount');
+    const coinCount = document.getElementById('coinCount');
+    const openBtn = document.getElementById('openBtn');
+    const rewardMsg = document.getElementById('rewardMsg');
+
+    function updateUI() {
+      keyCount.textContent = keys;
+      coinCount.textContent = coins;
+      openBtn.disabled = keys <= 0;
+    }
+
+    openBtn.addEventListener('click', () => {
+      if (keys <= 0) return;
+      keys--;
+      const reward = Math.random();
+      let msg = '';
+      if (reward < 0.5) {
+        const gained = Math.floor(Math.random() * 10) + 1;
+        coins += gained;
+        msg = `💰 You found ${gained} coins!`;
+      } else {
+        keys++;
+        msg = `🗝️ You found another key!`;
+      }
+      rewardMsg.textContent = msg;
+      updateUI();
+    });
+
+    updateUI();
+  </script>
+</body>
+</html>
